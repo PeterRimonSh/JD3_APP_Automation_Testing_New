@@ -1,0 +1,1 @@
+{"uuid":"356c8168-4b9b-450c-a976-cf39a535f35c","name":"Login_Test_Cases","children":["c6dbd628-92ae-4274-970f-c5fce3456ae0"],"befores":[{"name":"open_Jd3_app","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1667916962440,"stop":1667916982749}],"afters":[],"links":[],"start":1667916962362,"stop":1667916983092}
