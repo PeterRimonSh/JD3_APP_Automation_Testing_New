@@ -37,9 +37,9 @@ public class Shows_Page_Test_Cases extends AppiumBaseTest {
     public void open_shows_page_then_search_then_open_tvshow_page() throws InterruptedException, MalformedURLException{
         shows_page_setup.click_Shows_Filter();
         shows_page_setup.click_Search_Icon();
-        shows_page_setup.enter_Search_data("People think");
+        shows_page_setup.enter_Search_data("t");
         shows_page_setup.click_Show_card();
-        shows_page_setup.assert_on_text_in_Shows_inner_page("People think");
+        shows_page_setup.assert_on_text_in_Shows_inner_page("t");
         shows_page_setup.click_back_btn();
         //assertion here
 
@@ -54,16 +54,28 @@ public class Shows_Page_Test_Cases extends AppiumBaseTest {
     }
     @AfterMethod
     public void go_to_home_page()  {
-       // shows_page_setup.open_home_Page();
+
         try{
             Thread.sleep(3000);
+            while(driver.findElement(By.xpath(shows_page_setup.back_btn_Xpath)).isDisplayed())
+            {
+                shows_page_setup.click_back_btn();
+                Thread.sleep(3000);
+            }
+
             while(!driver.findElement(By.xpath(loginSetup.home_homeIcon_Xpath)).isDisplayed())
             {
                 shows_page_setup.click_back_btn();
             }
+
             loginSetup.click_home_Icon();
         }
         catch(Exception e){
         }
     }
+//    @AfterTest
+//    public void closeTest() {
+//        driver.closeApp();
+//        driver.quit();
+//    }
 }

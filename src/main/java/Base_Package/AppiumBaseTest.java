@@ -21,12 +21,12 @@ public class AppiumBaseTest {
     public  String udidx = "26EBB18810152892";
     public String platform_name = "Android";
     public String platform_version = "8.0.0";
-    public String app_package = "com.genwin.jd3tv";
+    public String app_package = "com.genwin.jd3tv.staging";
 
     public AppiumBaseTest()  {
        if (driver == null) {
           set_Genric_Capabilties_Login_Page();
-            wait = new WebDriverWait(driver, 45);
+            wait = new WebDriverWait(driver, 20);
             softAssert = new SoftAssert();
            action = new Actions(driver);
        }
