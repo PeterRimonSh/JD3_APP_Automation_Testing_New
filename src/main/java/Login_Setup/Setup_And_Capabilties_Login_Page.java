@@ -7,13 +7,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 public class Setup_And_Capabilties_Login_Page extends AppiumBaseTest {
 
    public String get_Started_Btn_Xpath  = "//*[@text='Get Started']";
-    public String email_loginPage_Xpath  = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.LinearLayout[1]/android.widget.FrameLayout/android.widget.EditText";
-    public String password_loginPage_Xpath = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.LinearLayout[2]/android.widget.FrameLayout/android.widget.EditText";
-    public String sign_In_loginPage_Xpath  = "//*[@text='Sign in']";
-    public String remember_Me_ChckBox_loginPage_Xpath  = "//*[@class='android.widget.CheckBox']";
+    public String email_loginPage_ID = "emailET";
+    public String password_loginPage_ID = "passwordET";
+    public String sign_In_loginPage_ID  = "signInBtn";
+    public String remember_Me_ChckBox_loginPage_ID  = "rememberMeCB";
 
     //Home Xpath
-    public String home_homeIcon_Xpath  = "//android.view.View[@content-desc='Home']";
+    public String home_homeIcon_Xpath  = "//*[@content-desc='Home']";
     public String profile_Icon_Xpath  = "//*[@text='PR']";
     public String sign_Out_Xpath  = "//*[@text='Sign out']";
     public String sign_Out_Popup_OK_Btn_Xpath  = "//*[@text='OK']";
@@ -27,19 +27,19 @@ public class Setup_And_Capabilties_Login_Page extends AppiumBaseTest {
     }
 
     public void enter_Email(String emailValue) {
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(email_loginPage_Xpath))).clear();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(email_loginPage_Xpath))).sendKeys(emailValue);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(email_loginPage_ID))).clear();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(email_loginPage_ID))).sendKeys(emailValue);
     }
 
     public void enter_password(String passwordValue) {
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(password_loginPage_Xpath))).clear();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(password_loginPage_Xpath))).sendKeys(passwordValue);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(password_loginPage_ID))).clear();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(password_loginPage_ID))).sendKeys(passwordValue);
     }
     public void click_Remember_Me_chckBox_Login_Page() {
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(remember_Me_ChckBox_loginPage_Xpath))).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(remember_Me_ChckBox_loginPage_ID))).click();
     }
     public void click_Sign_In() {
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(sign_In_loginPage_Xpath))).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(sign_In_loginPage_ID))).click();
     }
     public void click_home_Icon() {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(home_homeIcon_Xpath))).click();
@@ -54,8 +54,8 @@ public class Setup_And_Capabilties_Login_Page extends AppiumBaseTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(sign_Out_Popup_OK_Btn_Xpath))).click();
     }
     public void clear_Login_Fields() {
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(email_loginPage_Xpath))).clear();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(password_loginPage_Xpath))).clear();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(email_loginPage_ID))).clear();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(password_loginPage_ID))).clear();
 
     }
 

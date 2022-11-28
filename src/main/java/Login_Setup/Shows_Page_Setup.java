@@ -1,6 +1,7 @@
 package Login_Setup;
 
 import Base_Package.AppiumBaseTest;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
@@ -15,7 +16,7 @@ public class Shows_Page_Setup extends AppiumBaseTest {
     public String tv_shows_Search_Icon_Xpath  = "//android.view.View[@content-desc='fab']";
     public String tv_shows_Search_field_Xpath  = "//*[@text='Search']";
     public String tv_shows_See_ALL_Xpath  = "//*[@text='See All']";
-    public String back_btn_Xpath  = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View/android.widget.ScrollView/android.view.View/android.widget.ImageView";
+    public String back_btn_Xpath  = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.widget.ScrollView/android.view.View[2]/android.view.View[1]/android.widget.ImageView";
 
     public void click_Shows_Filter() {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(shows_filter_Xpath))).click();
@@ -46,5 +47,10 @@ public class Shows_Page_Setup extends AppiumBaseTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(tv_shows_Search_field_Xpath))).click();
         action = new Actions(driver);
         action.sendKeys(value).perform();
-        action.sendKeys(Keys.ENTER).perform();    }
+        action.sendKeys(Keys.ENTER).perform();
+    }
+    public void scroll(String value) {
+        driver.findElement(new MobileBy.ByAndroidUIAutomator("new UiScrollable(UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\""+value+"\").instance(0))")).click();
+
+    }
 }
