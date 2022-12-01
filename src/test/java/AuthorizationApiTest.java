@@ -2,8 +2,10 @@ import com.shaft.api.RestActions;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+
+import org.json.JSONException;
+
 import org.json.simple.JSONObject;
-import org.openqa.selenium.json.Json;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -16,10 +18,11 @@ public class AuthorizationApiTest {
     JSONObject loginBodyJsonObject,registerBodyJsonObject;
 
     @BeforeClass
-    public void init(){
+    public void init() throws JSONException {
         loginBodyJsonObject = new JSONObject();
         loginBodyJsonObject.put("username", "basselghaybour@gmail.com");
         loginBodyJsonObject.put("password", "123456789");
+
         registerBodyJsonObject = new JSONObject();
         registerBodyJsonObject.put("first_name","maysara");
         registerBodyJsonObject.put("last_name","mansour");
@@ -28,15 +31,22 @@ public class AuthorizationApiTest {
     }
 
     @Test
-    public void loginOperation(){
+    public void loginOperation() throws JSONException {
         System.out.println(BASE_URL_STAGING+LOGIN_STAGING_END_POINTS);
-        RestActions apiObject = new RestActions(BASE_URL_STAGING);
-        Response response = apiObject
-                .buildNewRequest(LOGIN_STAGING_END_POINTS, RestActions.RequestType.POST)
+//        RestActions apiObject = new RestActions(BASE_URL_STAGING);
+        Response response = RestActions
+                .buildNewRequest(BASE_URL_STAGING,LOGIN_STAGING_END_POINTS, RestActions.RequestType.POST)
                 .setRequestBody(loginBodyJsonObject)
                 .setContentType(ContentType.JSON)
                 .performRequest();
-        System.out.println("response for facets  : " + RestActions.getResponseJSONValue(response, ""));
+
+        org.json.JSONObject json = new org.json.JSONObject(RestActions.getResponseBody(response));
+        String id = json.getJSONObject("data").getString("_id");
+        String host = json.getJSONObject("data").getJSONObject("source").getString("host");
+        String member_id = json.getJSONObject("data").getJSONArray("memberships").getJSONObject(0).getString("_id");
+        System.out.println("response for facets  : " +  id);
+        System.out.println("response for facets  : " +  host);
+        System.out.println("response for facets  : " +  member_id);
     }
 
     @Test
@@ -48,6 +58,7 @@ public class AuthorizationApiTest {
                 .setRequestBody(registerBodyJsonObject)
                 .setContentType(ContentType.JSON)
                 .performRequest();
+
         System.out.println("response for facets  : " + RestActions.getResponseJSONValue(response, ""));
     }
 
