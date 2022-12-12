@@ -87,7 +87,7 @@ public class Shows_Page_Test_Cases extends AppiumBaseTest {
 
         try{
             Thread.sleep(3000);
-            while(!driver.findElement(By.xpath(loginSetup.home_homeIcon_Xpath)).isDisplayed())
+            while(!appiumDriver.findElement(By.xpath(loginSetup.home_homeIcon_Xpath)).isDisplayed())
             {
                 //new KeyEvent().withKey(AndroidKey.BACK);
                 shows_page_setup.click_back_btn();
@@ -102,7 +102,7 @@ public class Shows_Page_Test_Cases extends AppiumBaseTest {
     }
     @AfterTest
     public void closeTest() {
-        driver.closeApp();
-        driver.quit();
+        appiumDriver.closeApp();
+        appiumDriver.quit();
     }
 }

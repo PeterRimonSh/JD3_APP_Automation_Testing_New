@@ -1,41 +1,47 @@
+import RegisterSetup.RegisterSetup;
 import com.shaft.api.RestActions;
-
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-
 import org.json.JSONException;
-
 import org.json.simple.JSONObject;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.HashMap;
+import static utlility.Constants.*;
 
-import static utlility.Constants.BASE_URL_STAGING;
-import static utlility.Constants.LOGIN_STAGING_END_POINTS;
-
-public class AuthorizationApiTest {
-    JSONObject loginBodyJsonObject,registerBodyJsonObject;
+public class AuthorizationApiTest extends RegisterSetup{
+    JSONObject loginBodyJsonObject,registerBodyJsonObject, forgetPasswordJsonObject, resetPasswordJsonObject;
+    String emailPref;
+    String password = "1212311nvn54";
+    String newPassword = "33444fffsd54";
 
     @BeforeClass
-    public void init() throws JSONException {
+    public void init(){
         loginBodyJsonObject = new JSONObject();
         loginBodyJsonObject.put("username", "basselghaybour@gmail.com");
         loginBodyJsonObject.put("password", "123456789");
 
+        emailPref  = String.valueOf(System.currentTimeMillis());
         registerBodyJsonObject = new JSONObject();
         registerBodyJsonObject.put("first_name","maysara");
         registerBodyJsonObject.put("last_name","mansour");
-        registerBodyJsonObject.put("email",System.currentTimeMillis()+"@mailinator.com");
-        registerBodyJsonObject.put("password","121231135354");
+        registerBodyJsonObject.put("email",emailPref+"@mailinator.com");
+        registerBodyJsonObject.put("password",password);
+
+        forgetPasswordJsonObject = new JSONObject();
+       // forgetPasswordJsonObject.put("email",emailPref+"");
+        forgetPasswordJsonObject.put("email","1670870148531"+"@mailinator.com");
+        resetPasswordJsonObject = new JSONObject();
+
     }
 
     @Test
     public void loginOperation() throws JSONException {
         System.out.println(BASE_URL_STAGING+LOGIN_STAGING_END_POINTS);
-//        RestActions apiObject = new RestActions(BASE_URL_STAGING);
-        Response response = RestActions
-                .buildNewRequest(BASE_URL_STAGING,LOGIN_STAGING_END_POINTS, RestActions.RequestType.POST)
+        RestActions apiObject = new RestActions(BASE_URL_STAGING);
+        Response response = apiObject
+                .buildNewRequest(LOGIN_STAGING_END_POINTS, RestActions.RequestType.POST)
                 .setRequestBody(loginBodyJsonObject)
                 .setContentType(ContentType.JSON)
                 .performRequest();
@@ -50,16 +56,71 @@ public class AuthorizationApiTest {
     }
 
     @Test
-    public void registerOperation(){
-        System.out.println(BASE_URL_STAGING+"/users");
-        RestActions apiObject = new RestActions(BASE_URL_STAGING);
-        Response response = apiObject
-                .buildNewRequest("/users", RestActions.RequestType.POST)
+    public void registerOperation() throws InterruptedException {
+        System.out.println(BASE_URL_STAGING+REGISTER_STAGING_END_POINTS);
+        Response registerResponse = RestActions
+                .buildNewRequest(BASE_URL_STAGING,REGISTER_STAGING_END_POINTS, RestActions.RequestType.POST)
                 .setRequestBody(registerBodyJsonObject)
                 .setContentType(ContentType.JSON)
                 .performRequest();
+        System.out.println("response for facets  : " + RestActions.getResponseJSONValue(registerResponse, ""));
+        softAssert.assertEquals(registerResponse.getStatusCode(),200);
 
-        System.out.println("response for facets  : " + RestActions.getResponseJSONValue(response, ""));
+        verifyEmail(emailPref);
+
+        loginBodyJsonObject = new JSONObject();
+        loginBodyJsonObject.put("username", emailPref+"@mailinator.com");
+        loginBodyJsonObject.put("password", password);
+        Response loginResponse = RestActions
+                .buildNewRequest(BASE_URL_STAGING,LOGIN_STAGING_END_POINTS, RestActions.RequestType.POST)
+                .setRequestBody(loginBodyJsonObject)
+                .setContentType(ContentType.JSON)
+                .performRequest();
+
+        softAssert.assertEquals(loginResponse.getStatusCode(),200);
+        softAssert.assertAll();
     }
 
+    @Test
+    public void forgetPasswordOperation() throws InterruptedException, JSONException {
+       // registerOperation();
+
+
+        Response forgetPasswordResponse = RestActions
+                .buildNewRequest(BASE_URL_STAGING,FORGET_PASSWORD_STAGING_END_POINTS, RestActions.RequestType.POST)
+                .setRequestBody(forgetPasswordJsonObject)
+                .setContentType(ContentType.JSON)
+                .performRequest();
+
+        String status = assertStringJSONResponse(forgetPasswordResponse, "status");
+        softAssert.assertEquals(status,"SUCCESS");
+
+
+         String token = returnForgetPasswordToken(emailPref);
+       System.out.println("this is the token: "+token);
+      resetPasswordJsonObject.put("token", token);
+        resetPasswordJsonObject.put("password", newPassword);
+        Response resetPasswordResponse = RestActions
+                .buildNewRequest(BASE_URL_STAGING,RESET_PASSWORD_STAGING_END_POINTS, RestActions.RequestType.POST)
+                .setRequestBody(resetPasswordJsonObject)
+                .setContentType(ContentType.JSON)
+                .performRequest();
+        softAssert.assertEquals(assertStringJSONResponse(resetPasswordResponse, "status"),"SUCCESS");
+
+       // loginBodyJsonObject.put("username", emailPref+"@mailinator.com");
+        loginBodyJsonObject.put("username", "1670861701006@mailinator.com");
+        loginBodyJsonObject.put("password", newPassword);
+        Response loginResponse = RestActions
+                .buildNewRequest(BASE_URL_STAGING,LOGIN_STAGING_END_POINTS, RestActions.RequestType.POST)
+                .setRequestBody(loginBodyJsonObject)
+                .setContentType(ContentType.JSON)
+                .performRequest();
+        softAssert.assertEquals(assertStringJSONResponse(loginResponse, "status"),"SUCCESS");
+
+        softAssert.assertAll();
+    }
+    @AfterSuite
+    public void closeTest() {
+        driver.quit();
+    }
 }

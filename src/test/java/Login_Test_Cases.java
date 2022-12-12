@@ -73,7 +73,7 @@ public class Login_Test_Cases extends AppiumBaseTest {
     @AfterMethod
     public void go_to_login_if_logged_in(){
         try{
-            if(driver.findElement(By.xpath(loginSetup.home_homeIcon_Xpath)).isDisplayed())
+            if(appiumDriver.findElement(By.xpath(loginSetup.home_homeIcon_Xpath)).isDisplayed())
             {
                 loginSetup.click_Profile();
                 loginSetup.click_Sign_Out();
@@ -87,7 +87,7 @@ public class Login_Test_Cases extends AppiumBaseTest {
     }
     @AfterSuite
     public void closeTest() {
-        driver.closeApp();
-        driver.quit();
+        appiumDriver.closeApp();
+        appiumDriver.quit();
     }
 }

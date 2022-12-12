@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AppiumBaseTest {
-    public  static AppiumDriver<MobileElement> driver;
+    public  static AppiumDriver<MobileElement> appiumDriver;
     public static WebDriverWait wait;
     public static SoftAssert softAssert =  new SoftAssert();
     public Actions action;
@@ -34,11 +34,11 @@ public class AppiumBaseTest {
     public  static int isStaging = 1;
 
     public AppiumBaseTest()  {
-       if (driver == null) {
+       if (appiumDriver == null) {
           set_Genric_Capabilties_Login_Page();
-            wait = new WebDriverWait(driver, 45);
+            wait = new WebDriverWait(appiumDriver, 45);
             softAssert = new SoftAssert();
-           action = new Actions(driver);
+           action = new Actions(appiumDriver);
        }
     }
     public void set_Genric_Capabilties_Login_Page(){
@@ -52,7 +52,7 @@ public class AppiumBaseTest {
         cap.setCapability("autoGrantPermissions", "true");
         set_keyboard_caps();
         try {
-            driver = new AndroidDriver<>(
+            appiumDriver = new AndroidDriver<>(
                     new URL("http://localhost:4723/wd/hub")
                     , cap);
         } catch (MalformedURLException e) {
@@ -85,7 +85,7 @@ public class AppiumBaseTest {
 
     public  void takeScreenShot(String screenshotName){
         String destDir = "outputScreenshots";
-        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        File scrFile = ((TakesScreenshot)appiumDriver).getScreenshotAs(OutputType.FILE);
         DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy__hh_mm_ssaa");
 
         new File(destDir).mkdirs();

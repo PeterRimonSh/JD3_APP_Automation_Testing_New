@@ -38,19 +38,19 @@ public class Shows_Page_Setup extends AppiumBaseTest {
     }
     public void click_See_ALL() {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(tv_shows_See_ALL_Xpath)));
-        driver.findElements(By.xpath(tv_shows_See_ALL_Xpath)).get(0).click();
+        appiumDriver.findElements(By.xpath(tv_shows_See_ALL_Xpath)).get(0).click();
     }
     public void click_back_btn() {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(back_btn_Xpath))).click();
     }
     public void enter_Search_data(String value) {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(tv_shows_Search_field_Xpath))).click();
-        action = new Actions(driver);
+        action = new Actions(appiumDriver);
         action.sendKeys(value).perform();
         action.sendKeys(Keys.ENTER).perform();
     }
     public void scroll(String value) {
-        driver.findElement(new MobileBy.ByAndroidUIAutomator("new UiScrollable(UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\""+value+"\").instance(0))")).click();
+        appiumDriver.findElement(new MobileBy.ByAndroidUIAutomator("new UiScrollable(UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\""+value+"\").instance(0))")).click();
 
     }
 }
