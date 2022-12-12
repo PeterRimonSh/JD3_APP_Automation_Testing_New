@@ -26,10 +26,10 @@ public class RegisterSetup extends SeleniumBaseTest {
         driver.switchTo().frame(0);
 
         //driver.switchTo().frame("html_msg_body");
-        String emailContent = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='html_msg_body']"))).getAttribute("text");
-        String firstPart[] = emailContent.split("token=");
-        String secondPart[] = firstPart[1].split(" ");
-        String token = secondPart[0];
+        String emailContent = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("p:nth-child(4)"))).getText();
+        String firstPart[] = emailContent.split(" ");
+        String secondPart[] = firstPart[0].split("token=");
+        String token = secondPart[1];
         return token;
     }
 
